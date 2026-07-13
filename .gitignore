@@ -1,0 +1,7 @@
+.vscode/
+.history/
+*.bak
+*.sqlproj
+*.suo
+*.user
+*.log
