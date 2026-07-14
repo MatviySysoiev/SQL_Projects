@@ -1,0 +1,43 @@
+-- Recursive CTE
+-- Generate a sequence of numbers from 1 to 20
+
+WITH series AS
+(
+	-- ANCHOR query
+	SELECT
+	1 AS MyNumber
+	UNION ALL
+	-- Recursive query
+	SELECT 
+	MyNumber + 1
+	FROM series
+	WHERE MyNumber < 20
+)
+SELECT *
+FROM series
+OPTION (MAXRECURSION 30) -- LIMIT (If more than limit - error)
+;
+
+-- Show the employee hierarchy by displaying each employee's leven within the organisation
+WITH Cte_Emp_Hierarchy AS (
+	SELECT 
+		EmployeeID,
+		CONCAT(FirstName, ' ', LastName) as Employee,
+		ManagerID,
+		1 AS Level
+	FROM Sales.Employees
+	WHERE ManagerID IS NULL
+	UNION ALL
+	-- Recursive query
+	SELECT
+		e.EmployeeID,
+		CONCAT(e.FirstName, ' ', e.LastName) as Employee,
+		e.ManagerID,
+		Level + 1
+	FROM Sales.Employees e
+	INNER JOIN Cte_Emp_Hierarchy ceh
+		ON e.ManagerID = ceh.EmployeeID
+)
+SELECT
+	*
+FROM Cte_Emp_Hierarchy

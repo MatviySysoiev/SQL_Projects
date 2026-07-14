@@ -1,0 +1,2 @@
+SELECT  DISTINCT first_name, gender
+from parks_and_recreation.employee_demographics
